@@ -1,0 +1,30 @@
+# Ignore environment variable files
+.env
+
+# Ignore Google Sheets service account credentials
+sorsx-sheets-credentials.json
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore virtual environment directories
+venv/
+env/
+.venv/
+ENV/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore compiled files and folders
+*.pyc
+*.pyo
