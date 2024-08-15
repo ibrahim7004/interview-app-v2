@@ -34,7 +34,6 @@ How would you set up roles and permissions so that regional managers can see dat
 What considerations should be made when defining Organization-Wide Defaults (OWD) to ensure data privacy?
 How many profiles and roles would you create to ensure that only regional managers and their sales representatives can see their respective data?
 What is the difference between using profiles and permission sets in Salesforce?
-How would you handle a situation where multiple sales representatives need to share a similar role and profile setup without compromising data privacy?
 How can you configure Salesforce roles to minimize the number of roles while still maintaining data privacy and access controls?
 "In what scenarios would you consider merging sales representative roles under a single regional manager, and what impact would it have on data access?"
 "If two users share the same role and profile, can they see each other's data even if the OWD is set to private?"

@@ -8,4 +8,4 @@ gTTS
 setuptools==57.5.0
 pydub
 SpeechRecognition==3.8.1
-simpleaudio==1.0.4
+pygame==2.5.0
