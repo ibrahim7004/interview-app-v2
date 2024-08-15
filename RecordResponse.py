@@ -1,4 +1,5 @@
-import pyaudio
+import sounddevice as sd
+import numpy as np
 import wave
 import io
 import struct
@@ -8,7 +9,7 @@ import math
 # Constants
 RATE = 16000
 CHUNK = 1024
-FORMAT = pyaudio.paInt16
+FORMAT = np.int16
 CHANNELS = 1
 Threshold = 10
 TIMEOUT_LENGTH = 2.3
@@ -20,25 +21,19 @@ class Recorder:
 
     @staticmethod
     def rms(frame):
-        count = len(frame) // swidth
-        format = "%dh" % count
-        shorts = struct.unpack(format, frame)
+        count = len(frame)
+        shorts = np.frombuffer(frame, dtype=np.int16)
 
-        sum_squares = 0.0
-        for sample in shorts:
-            n = sample * SHORT_NORMALIZE
-            sum_squares += n * n
-        rms = math.pow(sum_squares / count, 0.5)
+        sum_squares = np.sum(shorts.astype(np.float32) ** 2)
+        rms = math.sqrt(sum_squares / count)
 
         return rms * 1000
 
     def __init__(self):
-        self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(format=FORMAT,
-                                  channels=CHANNELS,
-                                  rate=RATE,
-                                  input=True,
-                                  frames_per_buffer=CHUNK)
+        self.stream = sd.InputStream(samplerate=RATE,
+                                     channels=CHANNELS,
+                                     dtype=FORMAT,
+                                     blocksize=CHUNK)
 
     def record(self):
         print('Noise detected, recording beginning')
@@ -46,8 +41,9 @@ class Recorder:
         silent_chunks = 0
         max_silent_chunks = int(TIMEOUT_LENGTH * RATE / CHUNK)
 
+        self.stream.start()
         while True:
-            data = self.stream.read(CHUNK)
+            data, _ = self.stream.read(CHUNK)
             rec.append(data)
 
             if self.rms(data) < Threshold:
@@ -58,16 +54,19 @@ class Recorder:
             if silent_chunks > max_silent_chunks:
                 print("Silence detected, stopping recording.")
                 break
+        self.stream.stop()
 
         return b''.join(rec)
 
     def listen(self):
         print('Listening beginning')
+        self.stream.start()
         while True:
-            input_data = self.stream.read(CHUNK)
+            input_data, _ = self.stream.read(CHUNK)
             if self.rms(input_data) > Threshold:
                 audio_data = self.record()
                 return audio_data
+        self.stream.stop()
 
 
 def record_audio():
@@ -77,7 +76,7 @@ def record_audio():
     audio_buffer = io.BytesIO()
     with wave.open(audio_buffer, 'wb') as wave_file:
         wave_file.setnchannels(CHANNELS)
-        wave_file.setsampwidth(recorder.p.get_sample_size(FORMAT))
+        wave_file.setsampwidth(swidth)
         wave_file.setframerate(RATE)
         wave_file.writeframes(audio_data)
 
