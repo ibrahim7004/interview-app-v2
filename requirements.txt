@@ -6,6 +6,5 @@ protobuf<5.27.3
 streamlit==1.33.0
 gTTS
 setuptools==57.5.0
-pydub
+pydub==0.25.1
 SpeechRecognition==3.8.1
-pygame==2.5.0

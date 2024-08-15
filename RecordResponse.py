@@ -1,7 +1,8 @@
 import speech_recognition as sr
 import wave
 import io
-import pygame
+from pydub import AudioSegment
+from pydub.playback import play
 
 # Constants
 RATE = 16000
@@ -40,22 +41,9 @@ def record_audio():
 
 
 def play_audio(audio_buffer):
-    # Initialize the pygame mixer
-    pygame.mixer.init(frequency=RATE)
-
-    # Convert the BytesIO buffer back to a WAV file
     audio_buffer.seek(0)
-    wave_file = wave.open(audio_buffer, 'rb')
-
-    # Create a sound object from the wave file data
-    sound = pygame.mixer.Sound(audio_buffer.read())
-
-    # Play the sound
-    sound.play()
-
-    # Wait for the sound to finish playing
-    while pygame.mixer.get_busy():
-        pygame.time.wait(100)
+    audio_segment = AudioSegment.from_wav(audio_buffer)
+    play(audio_segment)
 
 
 # Example usage
