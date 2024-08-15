@@ -65,7 +65,6 @@ How do sharing settings and rules apply to a community site in Salesforce?
 "What are Organization-Wide Defaults (OWD), and how do they affect sharing settings for communities?"
 How would you resolve a 101 SOQL query limit exception?
 What steps would you take to optimize a query that is causing performance issues in Salesforce?
-"What are the three methods in a batch job in Salesforce, and what is the purpose of each method?"
 "If an LWC's performance issue is due to a slow query, how would you optimize this query?"
 "Besides optimizing queries, what other strategies can be employed to improve the performance of an LWC that loads only a few records but is still slow?"
 What steps would you take to create a master-detail relationship between Object A and Object B in Salesforce?
